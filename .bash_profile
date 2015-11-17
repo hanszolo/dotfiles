@@ -19,7 +19,7 @@ function web() {
    python -m SimpleHTTPServer 8086 & ngrok 8086
 }
 
-alias mount_www="sshfs hans@hans.stylesight.com:/var/www/ ~/Desktop/www -oauto_cache,reconnect,defer_permissions,negative_vncache,volname=www"
+alias mount_www="sshfs hzhou@hans.stylesight.com:/var/www/ ~/Desktop/www -oauto_cache,reconnect,defer_permissions,negative_vncache,volname=www"
 
 function get_proj() {
    cd $PROJECTHOME
