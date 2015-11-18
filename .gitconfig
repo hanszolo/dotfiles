@@ -1,2 +1,17 @@
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = true
+	pager = true
 [push]
 	default = matching
+[user]
+	email = Hans.Zhou@wgsn.com
+	name = Hans Zhou
+[alias]
+	graph = log --graph --decorate --color --oneline
+        co = checkout
+        ci = commit -a
+        aa = commit -a --amend
