@@ -6,8 +6,8 @@ export PS2="\[\033[38;5;2m\]$\[$(tput sgr0)\]"
 export CLICOLOR=1
 export LSCOLORS="fxgxcxdxbxegedabagacad"
 export EDITOR='subl -w'
-export PATH="~/bin/:$PATH"
-export PROJECTHOME="/Users/hanszhou/Desktop/www/"
+export PATH="~/bin:$PATH"
+export PROJECTHOME="/Users/hanszhou/Desktop/www"
 export EDITOR=/usr/bin/vim
 
 alias bashrl="source ~/.bash_profile"
@@ -19,6 +19,10 @@ function web() {
    python -m SimpleHTTPServer 8086 & ngrok 8086
 }
 
+function title() {
+   echo -ne "\033]0;$@\007"
+}
+
 alias mount_www="sshfs hzhou@hans.stylesight.com:/var/www/ ~/Desktop/www -oauto_cache,reconnect,defer_permissions,negative_vncache,volname=www"
 
 function get_proj() {
@@ -26,7 +30,7 @@ function get_proj() {
    if [[ $# -lt 1 ]] 
    then
        echo "Please specify a project name"
-       die 0
+       return 0
    fi
    if [[ $1 = "api" ]]
    then
@@ -41,5 +45,39 @@ function get_proj() {
    else
        git clone ssh://ss@devjetty.stylesight.com/var/git_repo/$1.git/
        cd ./$1
+   fi
+}
+
+function proj() {
+   if [ "$#" -gt 0 ]; then
+      if [ -d "$PROJECTHOME/$1" ]; then
+         if [ "$#" -gt 1 ]; then
+            if [ -d "$PROJECTHOME/$1/$2" ]; then
+               cd "$PROJECTHOME/$1/$2";
+               title "$1/$2"
+               return 0
+            fi
+         else
+            cd "$PROJECTHOME/$1";
+            title "$1"
+            return 0
+         fi
+      fi
+   fi
+   if [[ $PWD == $PROJECTHOME/* ]]; then
+      targetDir="$PROJECTHOME"
+      fragment=""
+      if [[ $PWD == $PROJECTHOME/api/* ]]; then
+         targetDir="$PROJECTHOME/api"
+         fragment="api/"
+      fi
+      i="$PWD"
+      while [[ ! $(dirname "$i") == $targetDir ]]; do
+         i=$(dirname "$i")
+      done
+      projname=$(basename "$i")
+      cd "$targetDir/$projname"
+      title "$fragment$projname"
+      return 0
    fi
 }
