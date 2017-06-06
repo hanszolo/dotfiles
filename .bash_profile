@@ -7,45 +7,51 @@ export CLICOLOR=1
 export LSCOLORS="fxgxcxdxbxegedabagacad"
 export EDITOR='subl -w'
 export PATH="~/bin:$PATH"
-export PROJECTHOME="/Users/hanszhou/Desktop/www"
+export PROJECTHOME="/Users/hanszhou/kinnek"
 export EDITOR=/usr/bin/vim
 
+# need in general (but especially helps for installing uwsgi)
+export CC=clang
+export CXX=clang
+export FFLAGS=-ff2c
+source virtualenvwrapper.sh; workon kinnek
+
+# helps installing lxml
+export CFLAGS=-Qunused-arguments
+export CPPFLAGS=-Qunused-arguments
+
+alias vi="vim"
 alias bashrl="source ~/.bash_profile"
 alias bashw="vim ~/.bash_profile && bashrl"
 alias gitw="vim ~/.gitconfig"
 alias sshw="vim ~/.ssh/config"
 
+#Load NVM
+export NVM_DIR="$HOME/.nvm"
+source "/usr/local/opt/nvm/nvm.sh"
+
+export WEBPACK_BUILD_TYPE=dev
+
 function web() {
-   python -m SimpleHTTPServer 8086 & ngrok 8086
+   python -m SimpleHTTPServer 8086 & ngrok http 8086
+   kill_port 8086
+}
+
+function fp() {
+  if [ -z "$1" ]; then
+    echo "Finds all the processes listening to a port. Usage: fp <port number>"; return 80;
+  fi
+  lsof -i ":$1" | awk '{print $2}' | grep '^[0-9]*$'
+}
+
+function kill_port() {
+  for pid in `fp $1`; do
+    kill $pid
+  done;
 }
 
 function title() {
    echo -ne "\033]0;$@\007"
-}
-
-alias mount_www="sshfs hzhou@hans.stylesight.com:/var/www/ ~/Desktop/www -oauto_cache,reconnect,defer_permissions,negative_vncache,volname=www"
-
-function get_proj() {
-   cd $PROJECTHOME
-   if [[ $# -lt 1 ]] 
-   then
-       echo "Please specify a project name"
-       return 0
-   fi
-   if [[ $1 = "api" ]]
-   then
-       if [[ $# -gt 1 ]]
-       then
-           cd ./api
-           git clone ssh://ss@devjetty.stylesight.com/var/git_repo/api/$2.git/
-           cd ./$2
-       else
-           echo "Please specify an api project name"
-       fi
-   else
-       git clone ssh://ss@devjetty.stylesight.com/var/git_repo/$1.git/
-       cd ./$1
-   fi
 }
 
 function proj() {
@@ -80,4 +86,14 @@ function proj() {
       title "$fragment$projname"
       return 0
    fi
+}
+
+function launch() {
+  current=`fp 8000`
+  if [[ $current -gt 0 ]]; then
+    echo "Server already running"; return 0;
+  fi
+  pushd $APP_BASE
+  nohup python kinnek/manage.py runserver 0.0.0.0:8000 2>/Users/hanszhou/logs/error.log >/Users/hanszhou/logs/access.log&
+  popd
 }
