@@ -6,13 +6,20 @@
 	ui = true
 	pager = true
 [push]
-	default = matching
+	default = simple
 [user]
 	email = hans.zhou@kinnek.com
 	name = Hans Zhou
 [alias]
+	conf = "! vim ~/.gitconfig;"
 	graph = log --graph --decorate --color --oneline
-        co = checkout
-        ci = commit -a
-        ciam = commit -a -m
-        aa = commit -a --amend
+	lg = log --graph --decorate --color --oneline
+	co = checkout
+	ci = commit -a
+	ciam = commit -a -m
+	aa = commit -a --amend
+	nb = checkout -b
+	fp = push --force
+	b = rev-parse --abbrev-ref HEAD
+	up = "! f() { git push --set-upstream origin `git b`; }; f;"
+	alias = config --get-regexp alias

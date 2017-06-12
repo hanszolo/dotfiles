@@ -32,6 +32,25 @@ source "/usr/local/opt/nvm/nvm.sh"
 
 export WEBPACK_BUILD_TYPE=dev
 
+function undot() {
+  if [[ $# -lt 2 ]]; then
+    echo "Ports a dot file into a .svg file.";
+    echo "Usage:";
+    echo "undot source.dot target.svg";
+    return 1
+  fi
+  if [[ ! -e $1 ]]; then
+    echo "file does not exist: $1"
+    return 1
+  fi
+  if [[ $2 =~ ^.*\.svg$ ]]; then
+    svgfile=$2
+  else
+    svgfile="$2.svg"
+  fi
+  dot -Tsvg "$1" > "$svgfile"
+}
+
 function web() {
    python -m SimpleHTTPServer 8086 & ngrok http 8086
    kill_port 8086
