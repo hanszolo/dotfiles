@@ -7,14 +7,12 @@ export CLICOLOR=1
 export LSCOLORS="fxgxcxdxbxegedabagacad"
 export EDITOR='subl -w'
 export PATH="~/bin:$PATH"
-export PROJECTHOME="/Users/hanszhou/kinnek"
 export EDITOR=/usr/bin/vim
 
 # need in general (but especially helps for installing uwsgi)
 export CC=clang
 export CXX=clang
 export FFLAGS=-ff2c
-source virtualenvwrapper.sh; workon kinnek
 
 # helps installing lxml
 export CFLAGS=-Qunused-arguments
@@ -26,11 +24,7 @@ alias bashw="vim ~/.bash_profile && bashrl"
 alias gitw="vim ~/.gitconfig"
 alias sshw="vim ~/.ssh/config"
 
-#Load NVM
-export NVM_DIR="$HOME/.nvm"
-source "/usr/local/opt/nvm/nvm.sh"
-
-export WEBPACK_BUILD_TYPE=dev
+source ~/.bash_variables
 
 function undot() {
   if [[ $# -lt 2 ]]; then
