@@ -12,10 +12,11 @@
 	name = Hans Zhou
 [alias]
 	conf = "! vim ~/.gitconfig;"
-	graph = log --graph --decorate --color --oneline
-	lg = log --graph --decorate --color --oneline
+	graph = log --graph --color --oneline
+	lg = log --graph --color --oneline --decorate
 	co = checkout
 	ci = commit -a
+	uncommit = reset HEAD~
 	ciam = commit -a -m
 	aa = commit -a --amend
 	nb = checkout -b
