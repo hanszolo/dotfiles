@@ -110,3 +110,20 @@ function launch() {
   nohup python kinnek/manage.py runserver 0.0.0.0:8000 2>/Users/hanszhou/logs/error.log >/Users/hanszhou/logs/access.log&
   popd
 }
+
+function sshj() {
+  if [ "$#" -lt 1 ]; then
+    echo "Must include an environment name"; return 1
+  fi
+  if [[ "$1" =~ [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+    ip="$1"
+  else
+    pushd ~/kinnek/dabbawala >/dev/null;
+    ip=`fab info:$1 2>/dev/null | grep -A1 'instances:' | tail -n1 | awk '{print $2}'`;
+    popd >/dev/null;
+  fi
+  if [ -z "$ip" ]; then
+    echo "Invalid environment name $1"; return 1
+  fi
+  ssh -t j ssh $ip;
+}
