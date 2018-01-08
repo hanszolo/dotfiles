@@ -8,8 +8,8 @@
 [push]
 	default = simple
 [user]
-	email = hans.zhou@kinnek.com
 	name = Hans Zhou
+	email = hzhou@stashinvest.com 
 [alias]
 	conf = "! vim ~/.gitconfig;"
 	graph = log --graph --color --oneline

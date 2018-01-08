@@ -127,3 +127,5 @@ function sshj() {
   fi
   ssh -t j ssh $ip;
 }
+# added by Anaconda3 5.0.1 installer
+export PATH="/Users/hanszhou/anaconda3/bin:$PATH"
