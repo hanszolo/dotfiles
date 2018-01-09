@@ -1,3 +1,4 @@
+#!/bin/bash
 function git_branch_ps1() {
 	git rev-parse 2>/dev/null && echo -e " \033[38;5;11m[\033[38;5;226m$(git rev-parse --abbrev-ref HEAD)\033[38;5;11m]"
 }
@@ -69,17 +70,27 @@ function title() {
 
 function proj() {
    if [ "$#" -gt 0 ]; then
-      if [ -d "$PROJECTHOME/$1" ]; then
+      if [[ "$@" == list ]]; then
+         ls $PROJECTHOME | sort | awk 'BEGIN {n=1} {print "-" n++ "- " $1}';
+         return 0;
+      elif [[ "$@" =~ -([0-9]+)- ]]; then
+        n="${BASH_REMATCH[1]}";
+        name=`ls $PROJECTHOME | sort | head -n $n | tail -n 1`;
+        echo "-$n- $name";
+        cd "$PROJECTHOME/$name";
+        title "$name";
+        return 0;
+      elif [ -d "$PROJECTHOME/$1" ]; then
          if [ "$#" -gt 1 ]; then
             if [ -d "$PROJECTHOME/$1/$2" ]; then
                cd "$PROJECTHOME/$1/$2";
                title "$1/$2"
-               return 0
+               return 0;
             fi
          else
             cd "$PROJECTHOME/$1";
             title "$1"
-            return 0
+            return 0;
          fi
       fi
    fi
