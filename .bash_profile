@@ -10,15 +10,6 @@ export EDITOR='subl -w'
 export PATH="~/bin:$PATH"
 export EDITOR=/usr/bin/vim
 
-# need in general (but especially helps for installing uwsgi)
-export CC=clang
-export CXX=clang
-export FFLAGS=-ff2c
-
-# helps installing lxml
-export CFLAGS=-Qunused-arguments
-export CPPFLAGS=-Qunused-arguments
-
 alias vi="vim"
 alias bashrl="source ~/.bash_profile"
 alias bashw="vim ~/.bash_profile && bashrl"
@@ -47,7 +38,7 @@ function undot() {
 }
 
 function web() {
-   python -m SimpleHTTPServer 8086 & ngrok http 8086
+   python -m http.server  8086 & ngrok http 8086
    kill_port 8086
 }
 
@@ -140,3 +131,5 @@ function sshj() {
 }
 # added by Anaconda3 5.0.1 installer
 export PATH="/Users/hanszhou/anaconda3/bin:$PATH"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
