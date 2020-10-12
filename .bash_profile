@@ -9,6 +9,7 @@ export LSCOLORS="fxgxcxdxbxegedabagacad"
 export EDITOR='subl -w'
 export PATH="~/bin:$PATH"
 export EDITOR=/usr/bin/vim
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 alias vi="vim"
 alias bashrl="source ~/.bash_profile"
@@ -38,7 +39,7 @@ function undot() {
 }
 
 function web() {
-   python -m http.server  8086 & ngrok http 8086
+   python3 -m http.server 8086 & ngrok http 8086
    kill_port 8086
 }
 
@@ -61,7 +62,7 @@ function title() {
 
 function proj() {
    if [ "$#" -gt 0 ]; then
-      if [[ "$@" == list ]]; then
+      if [[ "$@" == list ]] || [[ "$@" == ls ]]; then
          ls $PROJECTHOME | sort | awk 'BEGIN {n=1} {print "-" n++ "- " $1}';
          return 0;
       elif [[ "$@" =~ -([0-9]+)- ]]; then
@@ -102,34 +103,5 @@ function proj() {
       return 0
    fi
 }
-
-function launch() {
-  current=`fp 8000`
-  if [[ $current -gt 0 ]]; then
-    echo "Server already running"; return 0;
-  fi
-  pushd $APP_BASE
-  nohup python kinnek/manage.py runserver 0.0.0.0:8000 2>/Users/hanszhou/logs/error.log >/Users/hanszhou/logs/access.log&
-  popd
-}
-
-function sshj() {
-  if [ "$#" -lt 1 ]; then
-    echo "Must include an environment name"; return 1
-  fi
-  if [[ "$1" =~ [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-    ip="$1"
-  else
-    pushd ~/kinnek/dabbawala >/dev/null;
-    ip=`fab info:$1 2>/dev/null | grep -A1 'instances:' | tail -n1 | awk '{print $2}'`;
-    popd >/dev/null;
-  fi
-  if [ -z "$ip" ]; then
-    echo "Invalid environment name $1"; return 1
-  fi
-  ssh -t j ssh $ip;
-}
-# added by Anaconda3 5.0.1 installer
-export PATH="/Users/hanszhou/anaconda3/bin:$PATH"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
