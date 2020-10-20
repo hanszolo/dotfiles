@@ -27,3 +27,5 @@
 	alias = config --get-regexp alias
 	db = branch -D
 	drab = push --delete origin
+	noop = commit --amend --no-edit
+	noop-push = !git noop && git push -f
