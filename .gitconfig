@@ -9,7 +9,7 @@
 	default = simple
 [user]
 	name = Hans Zhou
-	email = hzhou@stashinvest.com 
+	email = hans.zhou@cedar.com
 [alias]
 	conf = "! vim ~/.gitconfig;"
 	graph = log --graph --color --oneline
