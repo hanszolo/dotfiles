@@ -27,5 +27,9 @@
 	alias = config --get-regexp alias
 	db = branch -D
 	drab = push --delete origin
-	noop = commit --amend --no-edit
-	noop-push = !git noop && git push -f
+	redate = !git commit --amend --no-edit --date "$(date)"
+	rdp = !git redate && git push -f
+	pob = "! f() { git fetch origin $1:$1; }; f"
+	refresh = pob master
+[pull]
+	rebase = false
