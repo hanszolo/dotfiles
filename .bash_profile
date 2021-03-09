@@ -16,6 +16,7 @@ alias bashrl="source ~/.bash_profile"
 alias bashw="vim ~/.bash_profile && bashrl"
 alias gitw="vim ~/.gitconfig"
 alias sshw="vim ~/.ssh/config"
+alias fig="docker-compose"
 
 source ~/.bash_variables
 
