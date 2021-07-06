@@ -9,7 +9,7 @@
 	default = simple
 [user]
 	name = Hans Zhou
-	email = hans@cedar.com
+	email = hans@remarkablefoods.com
 [alias]
 	conf = "! vim ~/.gitconfig;"
 	graph = log --graph --color --oneline

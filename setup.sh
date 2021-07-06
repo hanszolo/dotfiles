@@ -1,4 +1,14 @@
 #!/bin/bash
+
+function set_shell() {
+	if [[ $SHELL != /bin/bash ]]; then
+		echo "Switching shell to bash"
+		chsh -s /bin/bash
+	fi
+}
+
+set_shell
+
 set -eo pipefail
 ln -s $PWD/.bash_profile ~/.bash_profile
 mkdir -p ~/.ssh/
