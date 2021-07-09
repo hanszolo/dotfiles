@@ -10,6 +10,7 @@ export EDITOR='subl -w'
 export PATH="~/bin:$PATH"
 export EDITOR=/usr/bin/vim
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export LESS='-R'
 
 alias vi="vim"
 alias bashrl="source ~/.bash_profile"
