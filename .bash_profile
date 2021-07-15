@@ -21,6 +21,10 @@ alias fig="docker-compose"
 
 source ~/.bash_variables
 
+# Bash Completion
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+
 function undot() {
   if [[ $# -lt 2 ]]; then
     echo "Ports a dot file into a .svg file.";

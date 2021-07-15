@@ -17,6 +17,8 @@ ln -s $PWD/.gitconfig ~/.gitconfig
 
 which -s brew || (echo 'Install homebrew first'; exit 1)
 which -s realpath || brew install coreutils
+brew list bash-completion >>/dev/null 2>&1 || brew install bash-completion
+
 
 function set_project_home() {
 	read -ep "Which directory is project home? (~/Projects/): " proj_dir
