@@ -18,12 +18,20 @@ alias bashw="vim ~/.bash_profile && bashrl"
 alias gitw="vim ~/.gitconfig"
 alias sshw="vim ~/.ssh/config"
 alias fig="docker-compose"
+alias weather="open https://cdn.shakeshack.com/camera.jpg"
 
 source ~/.bash_variables
 
 # Bash Completion
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
 
+function getproj() {
+   cd "$PROJECTHOME"
+   git clone $1
+}
 
 function undot() {
   if [[ $# -lt 2 ]]; then

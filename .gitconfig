@@ -35,3 +35,5 @@
 	noop-push = !git noop && git push -f
 [pull]
 	rebase = false
+[core]
+	commentchar = ";"
