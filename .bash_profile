@@ -46,9 +46,9 @@ function undot() {
     return 1
   fi
   if [[ $2 =~ ^.*\.svg$ ]]; then
-    svgfile=$2
+    local svgfile=$2
   else
-    svgfile="$2.svg"
+    local svgfile="$2.svg"
   fi
   dot -Tsvg "$1" > "$svgfile"
 }
@@ -66,6 +66,7 @@ function fp() {
 }
 
 function kill_port() {
+  local pid
   for pid in `fp $1`; do
     kill $pid
   done;
@@ -75,46 +76,52 @@ function title() {
    echo -ne "\033]0;$@\007"
 }
 
+function projdir() {
+   if [[ $PWD == $PROJECTHOME/* ]]; then
+      local targetDir="$PROJECTHOME"
+      local i="$PWD"
+      while [[ ! $(dirname "$i") == $targetDir ]]; do
+         local i=$(dirname "$i")
+      done
+      local projname=$(basename "$i")
+      echo "$projname"
+   fi
+}
+
+function openproj() {
+   if [[ "$#" -ne 1 ]] || [ ! -d "$PROJECTHOME/$1" ] ; then
+      return 0;
+   fi
+   cd "$PROJECTHOME/$1"
+   title "$1"
+
+   if [[ -n "$VIRTUAL_ENV" ]]; then
+      deactivate
+   fi
+   if [[ -d ./venv ]]; then
+      . ./venv/bin/activate
+   fi
+}
+
 function proj() {
    if [ "$#" -gt 0 ]; then
       if [[ "$@" == list ]] || [[ "$@" == ls ]]; then
          ls $PROJECTHOME | sort | awk 'BEGIN {n=1} {print "-" n++ "- " $1}';
          return 0;
       elif [[ "$@" =~ -([0-9]+)- ]]; then
-        n="${BASH_REMATCH[1]}";
-        name=`ls $PROJECTHOME | sort | head -n $n | tail -n 1`;
+        local n="${BASH_REMATCH[1]}";
+        local name=`ls $PROJECTHOME | sort | head -n $n | tail -n 1`;
         echo "-$n- $name";
-        cd "$PROJECTHOME/$name";
-        title "$name";
+        openproj "$name"
         return 0;
-      elif [ -d "$PROJECTHOME/$1" ]; then
-         if [ "$#" -gt 1 ]; then
-            if [ -d "$PROJECTHOME/$1/$2" ]; then
-               cd "$PROJECTHOME/$1/$2";
-               title "$1/$2"
-               return 0;
-            fi
-         else
-            cd "$PROJECTHOME/$1";
-            title "$1"
-            return 0;
-         fi
+      elif [[ "$#" == 1 ]]; then
+         openproj "$1"
+         return 0;
       fi
    fi
    if [[ $PWD == $PROJECTHOME/* ]]; then
-      targetDir="$PROJECTHOME"
-      fragment=""
-      if [[ $PWD == $PROJECTHOME/api/* ]]; then
-         targetDir="$PROJECTHOME/api"
-         fragment="api/"
-      fi
-      i="$PWD"
-      while [[ ! $(dirname "$i") == $targetDir ]]; do
-         i=$(dirname "$i")
-      done
-      projname=$(basename "$i")
-      cd "$targetDir/$projname"
-      title "$fragment$projname"
+      local name=`projdir`
+      openproj "$name"
       return 0
    fi
 }
