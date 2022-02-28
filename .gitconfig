@@ -33,6 +33,7 @@
 	refresh = pob master
 	noop = commit --amend --no-edit
 	noop-push = !git noop && git push -f
+        prune = ! git fetch -p && git branch -v | grep ' \\[gone\\] ' | awk '{ print $1 }' | xargs -r git branch -D
 [pull]
 	rebase = false
 [core]
