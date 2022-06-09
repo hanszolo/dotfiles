@@ -41,12 +41,15 @@
 	# Pull Origin to Branch (git pull on a branch I don't have checked out)
 	pob = "! f() { git fetch origin $1:$1; }; f"
 	# git pull master when I'm on another branch
-	refresh = pob master
+	refresh = "!git pob master; git pob dev; git pob staging;"
 	noop = commit --amend --no-edit
 	noop-push = !git noop && git push -f
 	# Prune deleted branches
         pr = ! git fetch -p && git branch -v | grep -Fw '[gone]' | awk '{ print $1 }' | xargs -r git branch -D
 [pull]
 	rebase = false
+[diff]
+        algorithm = histogram
+        colorMoved = dimmed-zebra
 [core]
 	commentchar = ";"
