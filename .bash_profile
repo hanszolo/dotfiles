@@ -21,7 +21,7 @@ alias bashw="vim ~/.bash_profile && bashrl"
 alias gitw="vim ~/.gitconfig"
 alias sshw="vim ~/.ssh/config"
 alias fig="docker-compose"
-alias weather="open https://cdn.shakeshack.com/camera.jpg"
+alias unquarantine="xattr -d"
 
 # shellcheck source=/dev/null
 source "$HOME/.bash_variables"
